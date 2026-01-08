@@ -1,0 +1,41 @@
+name: Build alt-ime-ahk-v2f to EXE
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v6
+
+      - name: Download AutoHotkey and Ahk2Exe
+        shell: pwsh
+        run: |
+          $wd = (Get-Item .).FullName
+          # Download
+          gh release download --repo AutoHotkey/AutoHotkey --pattern "*.zip" --output "$wd\autohotkey.zip"
+          gh release download --repo AutoHotkey/Ahk2Exe --pattern "*.zip" --output "$wd\autohotkey2exe.zip"
+          
+          # Extract
+          Expand-Archive "$wd\autohotkey.zip" "$wd\autoHotkey\" -Force
+          Expand-Archive "$wd\autohotkey2exe.zip" "$wd\autoHotkey\Compiler" -Force
+          Remove-Item "$wd\*.zip" -Force
+          "$wd\autohotkey;$wd\autohotkey\Compiler" >> $env:GITHUB_PATH
+          "BaseFile=$wd\autohotkey\AutoHotkey64.exe" >> $env:GITHUB_ENV
+
+      # Ahk2Exe のパスを探して .ahk → .exe に変換
+      - name: Compile to EXE with Ahk2Exe
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path dist | Out-Null
+          ahk2exe.exe /silent verbose /in "alt-ime-ahk-v2f.ahk" /out "dist\alt-ime-ahk-v2f.exe" /base $env:BaseFile
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: alt-ime-ahk-v2f-exe
+          path: dist/alt-ime-ahk-v2f.exe
+          if-no-files-found: error
