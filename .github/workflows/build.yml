@@ -36,6 +36,11 @@ jobs:
           New-Item -ItemType Directory -Force -Path dist | Out-Null
           ahk2exe.exe /silent verbose /in "alt-ime-ahk-v2f.ahk" /out "dist\alt-ime-ahk-v2f.exe" /base $env:BaseFile
 
+      - name: Create ZIP archive
+        shell: pwsh
+        run: |
+          Compress-Archive -Path "dist\alt-ime-ahk-v2f.exe" -DestinationPath "dist\alt-ime-ahk-v2f.zip" -Force
+
       - name: Upload artifact
         uses: actions/upload-artifact@v6
         with:
@@ -49,4 +54,4 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         shell: pwsh
         run: |
-          gh release upload ${{ github.event.release.tag_name }} dist/alt-ime-ahk-v2f.exe --clobber
+          gh release upload ${{ github.event.release.tag_name }} dist/alt-ime-ahk-v2f.exe dist/alt-ime-ahk-v2f.zip --clobber
