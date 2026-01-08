@@ -2,6 +2,8 @@ name: Build alt-ime-ahk-v2f to EXE
 
 on:
   workflow_dispatch: {}
+  release:
+    types: [published]
 
 jobs:
   build:
@@ -28,7 +30,6 @@ jobs:
           "$wd\autohotkey;$wd\autohotkey\Compiler" >> $env:GITHUB_PATH
           "BaseFile=$wd\autohotkey\AutoHotkey64.exe" >> $env:GITHUB_ENV
 
-      # Ahk2Exe のパスを探して .ahk → .exe に変換
       - name: Compile to EXE with Ahk2Exe
         shell: pwsh
         run: |
@@ -41,3 +42,11 @@ jobs:
           name: alt-ime-ahk-v2f-exe
           path: dist/alt-ime-ahk-v2f.exe
           if-no-files-found: error
+
+      - name: Upload to release
+        if: github.event_name == 'release'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: pwsh
+        run: |
+          gh release upload ${{ github.event.release.tag_name }} dist/alt-ime-ahk-v2f.exe --clobber
