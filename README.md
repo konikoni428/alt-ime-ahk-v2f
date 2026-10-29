@@ -10,6 +10,9 @@
 * CapsLock 無効化
 * 文字列を選択後 Win + F で検索
 
+## 修正
+* Chrome や VS Code など Chromium 系アプリで、Alt 単押しで上部メニュー（右上「︙」など）にフォーカスが移るのを抑制
+
 ## 動作環境
 
 * Windows 10 / 11
@@ -28,3 +31,13 @@ Releases から alt-ime-ahk-v2f.exe をダウンロード後、exe を起動す�
 
 [Autohotkey v2.0のIME制御用 関数群 IMEv2.ahk](https://qiita.com/kenichiro_ayaki/items/d55005df2787da725c6f)
 
+
+## ライセンス
+
+本ソフトウェアは GNU General Public License v2.0 (GPLv2) の下で配布されます。全文は [LICENSE](LICENSE) を参照してください。
+
+Copyright (C) 2025-2026 ryo
+
+本スクリプトは AutoHotkey（GPLv2）を利用しており、Ahk2Exe でコンパイルした exe には AutoHotkey インタプリタが含まれます。そのため exe のみを配布する場合でも、対応するソースコードは本リポジトリ [github.com/ryobeam/alt-ime-ahk-v2f](https://github.com/ryobeam/alt-ime-ahk-v2f) で公開しています。
+
+なお、本スクリプトは karakaram 氏の alt-ime-ahk および IMEv2.ahk を基にしています（上記「参考」を参照）。
