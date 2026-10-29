@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Download AutoHotkey and Ahk2Exe
         shell: pwsh
@@ -42,7 +42,7 @@ jobs:
           Compress-Archive -Path "dist\alt-ime-ahk-v2f.exe" -DestinationPath "dist\alt-ime-ahk-v2f.zip" -Force
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: alt-ime-ahk-v2f-exe
           path: dist/alt-ime-ahk-v2f.exe
